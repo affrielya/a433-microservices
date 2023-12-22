@@ -34,7 +34,7 @@ jobs:
           command: docker push docker.pkg.github.com/affrielya/karsajobs/karsajobs:latest
 
 workflows:
-  sample: 
+  lint-test-and-build-karsajobs: 
     jobs:
       - lint-dockerfile
       - test-app
