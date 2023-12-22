@@ -1,0 +1,41 @@
+version: 2.1
+jobs:
+  lint-dockerfile:
+    docker:
+      - image: docker:stable
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: lint Dockerfile using hadolint docker image image
+          command: docker run --rm -i hadolint/hadolint < Dockerfile
+  test-app:
+    docker:
+      - image: circleci/golang:1.15.8
+    steps:
+      - checkout
+      - run:
+          name: running unit test for backend
+          command: go test -v -short --count=1 $(go list ./...)
+  build-app-karsajobs:
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Image
+          command: docker build -t docker.pkg.github.com/affrielya/karsajobs/karsajobs:latest .
+      - run:
+          name: Login ke Github Container Registry
+          command: echo "$DOCKER_TOKEN" | docker login docker.pkg.github.com -u affrielya --password-stdin
+      - run:
+          name: Push Image
+          command: docker push docker.pkg.github.com/affrielya/karsajobs/karsajobs:latest
+
+workflows:
+  sample: 
+    jobs:
+      - lint-dockerfile
+      - test-app
+      - build-app-karsajobs
