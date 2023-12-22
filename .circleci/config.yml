@@ -28,7 +28,7 @@ jobs:
           command: docker build -t docker.pkg.github.com/affrielya/karsajobs/karsajobs:latest .
       - run:
           name: Login ke Github Container Registry
-          command: echo "$DOCKER_TOKEN" | docker login docker.pkg.github.com -u affrielya --password-stdin
+          command: echo "$GHCR_KARSAJOBS" | docker login docker.pkg.github.com -u affrielya --password-stdin
       - run:
           name: Push Image
           command: docker push docker.pkg.github.com/affrielya/karsajobs/karsajobs:latest
