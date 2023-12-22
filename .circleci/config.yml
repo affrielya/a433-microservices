@@ -26,7 +26,7 @@ jobs:
           command: docker push docker.pkg.github.com/affrielya/karsajobs-ui/karsajobs-ui:latest
 
 workflows:
-  sample: 
+  lint-and-build-karsajobs-ui: 
     jobs:
       - lint-dockerfile
       - build-app-karsajobs-ui
